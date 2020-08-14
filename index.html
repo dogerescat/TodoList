@@ -1,11 +1,100 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Todoリスト</title>
+  </head>
+  <body>
+    <h1>Todoリスト</h1>
+    <div id="container">
+      <form action="">
+        <label> <input type="radio" name="radio" value="all" />全て </label>
+        <label>
+          <input type="radio" name="radio" value="working" />作業中
+        </label>
+        <label>
+          <input type="radio" name="radio" value="complete" />完了
+        </label>
+      </form>
+
+      <table>
+        <thead>
+          <tr>
+            <th>id</th>
+            <th>コメント</th>
+            <th>状態</th>
+          </tr>
+        </thead>
+        <tbody id="todo-body"></tbody>
+      </table>
+
+      <div id="input-container">
+        <h2>新規タスクの追加</h2>
+        <input class="input" type="text" />
+        <input class="button" type="button" value="追加" />
+      </div>
+    </div>
+
+    <script>
+      "use strict";
+      {
+        const todos = [];
+        let id = 0;
+
+        const button = document.querySelector(".button");
+        const input = document.querySelector(".input");
+        const tbody = document.getElementById("todo-body");
+
+        const addTask = () => {
+          const todo = {
+            id: id++,
+            comment: input.value,
+            status: "作業中",
+            delete: "削除",
+          };
+          if (todo) {
+            todos.push(todo);
+            input.value = "";
+            show(todos);
+          }
+        };
+
+        const show = (todos) => {
+          if (tbody.hasChildNodes()) {
+            while (tbody.firstChild) {
+              tbody.removeChild(tbody.firstChild);
+            }
+          }
+
+          todos.forEach((todo) => {
+            const tr = document.createElement("tr");
+
+            const tId = document.createElement("td");
+            const tComment = document.createElement("td");
+            const statusTd = document.createElement("td");
+            const deleteTd = document.createElement("td");
+
+            const tStatus = document.createElement("button");
+            const deleteButton = document.createElement("button");
+            statusTd.appendChild(tStatus);
+            deleteTd.appendChild(deleteButton);
+
+            tId.appendChild(document.createTextNode(todo.id));
+            tComment.appendChild(document.createTextNode(todo.comment));
+            tStatus.appendChild(document.createTextNode(todo.status));
+            deleteButton.appendChild(document.createTextNode(todo.delete));
+
+            tr.appendChild(tId);
+            tr.appendChild(tComment);
+            tr.appendChild(statusTd);
+            tr.appendChild(deleteTd);
+            tbody.appendChild(tr);
+          });
+        };
+
+        button.addEventListener("click", addTask);
+      }
+    </script>
+  </body>
 </html>
