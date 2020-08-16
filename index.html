@@ -39,28 +39,14 @@
     <script>
       "use strict";
       {
-        const todos = [];
+        let todos = [];
         let id = 0;
-
         const button = document.querySelector(".button");
         const input = document.querySelector(".input");
         const tbody = document.getElementById("todo-body");
 
-        const addTask = () => {
-          const todo = {
-            id: id++,
-            comment: input.value,
-            status: "作業中",
-            delete: "削除",
-          };
-          if (todo) {
-            todos.push(todo);
-            input.value = "";
-            show(todos);
-          }
-        };
 
-        const show = (todos) => {
+        const showTodos = (todos) => {
           if (tbody.hasChildNodes()) {
             while (tbody.firstChild) {
               tbody.removeChild(tbody.firstChild);
@@ -69,7 +55,6 @@
 
           todos.forEach((todo) => {
             const tr = document.createElement("tr");
-
             const tId = document.createElement("td");
             const tComment = document.createElement("td");
             const statusTd = document.createElement("td");
@@ -85,12 +70,57 @@
             tStatus.appendChild(document.createTextNode(todo.status));
             deleteButton.appendChild(document.createTextNode(todo.delete));
 
+            deleteButton.addEventListener("click", deleteTask);
+
             tr.appendChild(tId);
             tr.appendChild(tComment);
             tr.appendChild(statusTd);
             tr.appendChild(deleteTd);
             tbody.appendChild(tr);
           });
+        };
+
+        const addTask = () => {
+          const todo = {
+            id: id++,
+            comment: input.value,
+            status: "作業中",
+            delete: "削除",
+          };
+          if (todo) {
+            todos.push(todo);
+            input.value = "";
+            showTodos(todos);
+          }
+        };
+
+        const deleteTask = (e) => {
+          const t = e.target.closest("tr");
+          const trIndex = [...tbody.querySelectorAll("tr")].indexOf(t);
+
+          t.parentNode.removeChild(t);
+          todos.splice(trIndex, 1);
+
+          updateId(trIndex);
+        };
+
+        const updateId = (index) => {
+          todos.forEach((todo) => {
+            if (todo.id > index) {
+              todo.id--;
+            } else {
+              return;
+            }
+          });
+
+          if (tbody.hasChildNodes()) {
+            const lastTodo = todos.slice(-1)[0];
+            const lastTodoId = lastTodo.id;
+            id = lastTodoId + 1;
+          } else {
+            id = 0;
+          }
+          showTodos(todos);
         };
 
         button.addEventListener("click", addTask);
