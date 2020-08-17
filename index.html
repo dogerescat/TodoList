@@ -57,25 +57,26 @@
             const tr = document.createElement("tr");
             const tId = document.createElement("td");
             const tComment = document.createElement("td");
-            const statusTd = document.createElement("td");
-            const deleteTd = document.createElement("td");
+            const tStatus = document.createElement("td");
+            const tDelete = document.createElement("td");
 
-            const tStatus = document.createElement("button");
+            const statusButton = document.createElement("button");
             const deleteButton = document.createElement("button");
-            statusTd.appendChild(tStatus);
-            deleteTd.appendChild(deleteButton);
+            tStatus.appendChild(statusButton);
+            tDelete.appendChild(deleteButton);
 
             tId.appendChild(document.createTextNode(todo.id));
             tComment.appendChild(document.createTextNode(todo.comment));
-            tStatus.appendChild(document.createTextNode(todo.status));
+            statusButton.appendChild(document.createTextNode(todo.status));
             deleteButton.appendChild(document.createTextNode(todo.delete));
 
             deleteButton.addEventListener("click", deleteTask);
+            statusButton.addEventListener("click", changeStatus);
 
             tr.appendChild(tId);
             tr.appendChild(tComment);
-            tr.appendChild(statusTd);
-            tr.appendChild(deleteTd);
+            tr.appendChild(tStatus);
+            tr.appendChild(tDelete);
             tbody.appendChild(tr);
           });
         };
@@ -122,6 +123,17 @@
           }
           showTodos(todos);
         };
+
+        const changeStatus = (e) => {
+          const t = e.target.closest("tr");
+          const trIndex = [...tbody.querySelectorAll("tr")].indexOf(t);
+          if(todos[trIndex].status==="作業中"){
+            todos[trIndex].status = "完了";
+          }else if(todos[trIndex].status==="完了"){
+            todos[trIndex].status = "作業中";
+          }
+          showTodos(todos);
+        }
 
         button.addEventListener("click", addTask);
       }
