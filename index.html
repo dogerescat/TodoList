@@ -45,7 +45,6 @@
         const input = document.querySelector(".input");
         const tbody = document.getElementById("todo-body");
 
-
         const showTodos = (todos) => {
           if (tbody.hasChildNodes()) {
             while (tbody.firstChild) {
@@ -127,13 +126,15 @@
         const changeStatus = (e) => {
           const t = e.target.closest("tr");
           const trIndex = [...tbody.querySelectorAll("tr")].indexOf(t);
-          if(todos[trIndex].status==="作業中"){
-            todos[trIndex].status = "完了";
-          }else if(todos[trIndex].status==="完了"){
-            todos[trIndex].status = "作業中";
-          }
+          todos.forEach((todo, index) => {
+            if (index === trIndex && todo.status === "作業中") {
+              todo.status = "完了";
+            } else if (index === trIndex && todo.status === "完了") {
+              todo.status = "作業中";
+            }
+          });
           showTodos(todos);
-        }
+        };
 
         button.addEventListener("click", addTask);
       }
