@@ -107,9 +107,9 @@
         };
 
         const updateId = () => {
-          todos.forEach((todo, index) => {
-            todo.id = index;
-          });
+          for (let i = 0; i <= todos.length - 1; i++) {
+            todos[i].id = i;
+          }
 
           if (tbody.hasChildNodes()) {
             const lastTodo = todos.slice(-1)[0];
