@@ -111,13 +111,9 @@
             todos[i].id = i;
           }
 
-          if (tbody.hasChildNodes()) {
-            const lastTodo = todos.slice(-1)[0];
-            const lastTodoId = lastTodo.id;
-            id = lastTodoId + 1;
-          } else {
-            id = 0;
-          }
+          todos.forEach((todo, index) => {
+            id = index + 1;
+          })
           chooseTodos();
         };
 
